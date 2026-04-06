@@ -1,0 +1,751 @@
+/* ===============================
+   Global Theme Configuration
+   TrueUnion - Dark/Light Theme
+   =============================== */
+
+/* --- Light Theme (Default) --- */
+:root,
+[data-theme="light"] {
+    /* Colors - Background */
+    --theme-bg: #f8f6f6;
+    --theme-bg-secondary: #ffffff;
+    --theme-surface: #ffffff;
+    --theme-surface-hover: #f5f5f5;
+    --theme-card-bg: rgba(255, 255, 255, 0.9);
+    --theme-bg-primary: #f8f6f6;
+    --theme-bg-tertiary: #f9fafb;
+    --theme-bg-overlay: rgba(255, 255, 255, 0.85);
+    
+    /* Colors - Text */
+    --theme-text: #1f2937;
+    --theme-text-secondary: #4b5563;
+    --theme-text-muted: #6b7280;
+    --theme-text-inverse: #ffffff;
+    --theme-text-primary: #1f2937;
+    
+    /* Colors - Primary Brand */
+    --theme-primary: #ec3713;
+    --theme-primary-dark: #c52b0d;
+    --theme-primary-light: rgba(236, 55, 19, 0.1);
+    --theme-primary-hover: #c52b0d;
+    
+    /* Colors - Secondary */
+    --theme-secondary: #6d28d9;
+    --theme-secondary-light: #8b5cf6;
+    
+    /* Colors - Accent */
+    --theme-accent: #f97316;
+    --theme-accent-light: #fb923c;
+    --theme-accent-hover: #ea580c;
+    
+    /* Colors - Status */
+    --theme-success: #10b981;
+    --theme-warning: #f59e0b;
+    --theme-error: #ef4444;
+    --theme-info: #3b82f6;
+    
+    /* Colors - Borders */
+    --theme-border: #e5e7eb;
+    --theme-border-light: #f3f4f6;
+    --theme-border-dark: #d1d5db;
+    
+    /* Colors - Shadows */
+    --theme-shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.05);
+    --theme-shadow-md: 0 10px 30px rgba(0, 0, 0, 0.07);
+    --theme-shadow-lg: 0 15px 35px rgba(0, 0, 0, 0.12);
+    --theme-shadow-xl: 0 20px 50px rgba(0, 0, 0, 0.15);
+    
+    /* AdminLTE Overrides (Light) */
+    --admin-bg: #ffffff;
+    --admin-sidebar-bg: #343a40;
+    --admin-sidebar-text: #ffffff;
+    --admin-sidebar-hover: #495057;
+    --admin-header-bg: #ffffff;
+    --admin-header-text: #495057;
+    --admin-content-bg: #f4f6f9;
+    --admin-card-bg: #ffffff;
+    --admin-border: #dee2e6;
+    --admin-text: #212529;
+    --admin-text-muted: #6c757d;
+}
+
+/* --- Dark Theme --- */
+[data-theme="dark"] {
+    /* Colors - Background */
+    --theme-bg: #181211;
+    --theme-bg-secondary: #221310;
+    --theme-surface: #271d1c;
+    --theme-surface-hover: #392b28;
+    --theme-card-bg: rgba(39, 29, 28, 0.9);
+    --theme-bg-primary: #181211;
+    --theme-bg-tertiary: #334155;
+    --theme-bg-overlay: rgba(15, 23, 42, 0.95);
+    
+    /* Colors - Text */
+    --theme-text: #ffffff;
+    --theme-text-secondary: #b9a19d;
+    --theme-text-muted: #8b7a77;
+    --theme-text-inverse: #1f2937;
+    --theme-text-primary: #ffffff;
+    
+    /* Colors - Primary Brand */
+    --theme-primary: #ec3713;
+    --theme-primary-dark: #c52b0d;
+    --theme-primary-light: rgba(236, 55, 19, 0.2);
+    --theme-primary-hover: #c52b0d;
+    
+    /* Colors - Secondary */
+    --theme-secondary: #8b5cf6;
+    --theme-secondary-light: #a78bfa;
+    
+    /* Colors - Accent */
+    --theme-accent: #fb923c;
+    --theme-accent-light: #fdba74;
+    --theme-accent-hover: #f97316;
+    
+    /* Colors - Status */
+    --theme-success: #22c55e;
+    --theme-warning: #fbbf24;
+    --theme-error: #f87171;
+    --theme-info: #60a5fa;
+    
+    /* Colors - Borders */
+    --theme-border: #392b28;
+    --theme-border-light: #2a1f1e;
+    --theme-border-dark: #392b28;
+    
+    /* Colors - Shadows */
+    --theme-shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.3);
+    --theme-shadow-md: 0 10px 30px rgba(0, 0, 0, 0.4);
+    --theme-shadow-lg: 0 15px 35px rgba(0, 0, 0, 0.5);
+    --theme-shadow-xl: 0 20px 50px rgba(0, 0, 0, 0.6);
+    
+    /* AdminLTE Overrides (Dark) */
+    --admin-bg: #1e293b;
+    --admin-sidebar-bg: #0f172a;
+    --admin-sidebar-text: #f1f5f9;
+    --admin-sidebar-hover: #334155;
+    --admin-header-bg: #1e293b;
+    --admin-header-text: #f1f5f9;
+    --admin-content-bg: #0f172a;
+    --admin-card-bg: #1e293b;
+    --admin-border: #334155;
+    --admin-text: #f1f5f9;
+    --admin-text-muted: #94a3b8;
+}
+
+/* --- Admin Branding Theme Support --- */
+/* Hide dark branding by default */
+.brand-logo-container .dark\:opacity-100,
+.brand-logo-container .dark\:opacity-0 + .dark\:opacity-100 {
+    display: none !important;
+}
+
+/* Show dark branding and hide light branding when .dark class is active on <html> or <body> */
+.dark .brand-logo-container .dark\:opacity-0,
+[data-theme="dark"] .brand-logo-container .dark\:opacity-0 {
+    display: none !important;
+}
+
+.dark .brand-logo-container .dark\:opacity-100,
+[data-theme="dark"] .brand-logo-container .dark\:opacity-100 {
+    display: block !important;
+    position: relative !important; /* Reset absolute to allow normal flow if needed, or keep absolute if container is relative */
+}
+
+/* Specific fix for Admin Sidebar absolute positioning */
+.brand-link .brand-logo-container img.absolute {
+    left: 1rem !important;
+}
+
+/* --- Theme Transition --- */
+* {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* --- Theme Toggle Switch Styles --- */
+.theme-toggle {
+    position: relative !important;
+    display: inline-block !important;
+    cursor: pointer !important;
+    margin: 0 !important;
+    z-index: 10 !important;
+    width: 60px !important;
+    height: 30px !important;
+    box-sizing: border-box !important;
+}
+
+/* Ensure the label itself is properly styled */
+label.theme-toggle {
+    display: block !important;
+    width: 60px !important;
+    height: 30px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    position: relative !important;
+}
+
+.theme-toggle-wrapper {
+    display: flex !important;
+    align-items: center;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Hide checkbox completely - override Tailwind and all other styles */
+input.theme-toggle-input,
+.theme-toggle input[type="checkbox"],
+.theme-toggle input.theme-toggle-input,
+input[type="checkbox"].theme-toggle-input {
+    position: absolute !important;
+    opacity: 0 !important;
+    width: 0 !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    pointer-events: none !important;
+    visibility: hidden !important;
+    display: none !important;
+    clip: rect(0, 0, 0, 0) !important;
+    clip-path: inset(50%) !important;
+}
+
+.theme-toggle-slider {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    background-color: #d1d5db !important;
+    border-radius: 30px !important;
+    transition: background-color 0.3s ease !important;
+    cursor: pointer !important;
+    box-sizing: border-box !important;
+}
+
+.theme-toggle-slider:before {
+    content: '' !important;
+    position: absolute !important;
+    bottom: 3px !important;
+    left: 3px !important;
+    height: 24px !important;
+    width: 24px !important;
+    background-color: #ffffff !important;
+    border-radius: 50% !important;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+    display: block !important;
+}
+
+/* Light theme - unchecked state (default) */
+.theme-toggle-slider {
+    background-color: #d1d5db;
+}
+
+.theme-toggle-slider:before {
+    transform: translateX(0);
+    background-color: #ffffff;
+}
+
+/* Dark theme - unchecked state */
+[data-theme="dark"] .theme-toggle-slider {
+    background-color: #374151;
+}
+
+/* Checked state - primary color background (dark mode active) */
+.theme-toggle-input:checked + .theme-toggle-slider {
+    background-color: #ec3713 !important;
+}
+
+.theme-toggle-input:checked + .theme-toggle-slider:before {
+    transform: translateX(30px) !important;
+    background-color: #ffffff;
+}
+
+/* Hover effects with shadow */
+.theme-toggle:hover .theme-toggle-slider:before {
+    box-shadow: 0 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+.theme-toggle:hover .theme-toggle-input:checked + .theme-toggle-slider:before {
+    box-shadow: 0 0 0 8px rgba(236, 55, 19, 0.2);
+}
+
+/* Active/focus state */
+.theme-toggle-input:focus + .theme-toggle-slider {
+    outline: 2px solid var(--theme-primary);
+    outline-offset: 2px;
+}
+
+/* Admin panel theme toggle styling */
+.navbar-nav .theme-toggle-wrapper {
+    display: flex;
+    align-items: center;
+    margin-right: 0.5rem;
+}
+
+.navbar-nav .theme-toggle {
+    margin: 0;
+}
+
+/* Header theme toggle styling */
+header .theme-toggle-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+/* Ensure toggle is visible in header for all users */
+header .theme-toggle-wrapper,
+.theme-toggle-wrapper {
+    display: flex !important;
+    align-items: center;
+    visibility: visible;
+}
+
+/* Make sure toggle wrapper is visible in top-navbar */
+.top-navbar .theme-toggle-wrapper,
+header .theme-toggle-wrapper {
+    display: flex !important;
+    align-items: center;
+    visibility: visible;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+    .theme-toggle-slider {
+        font-size: 14px; /* Slightly smaller on mobile */
+    }
+}
+
+/* --- Admin Dark Theme Overrides --- */
+[data-theme="dark"] .main-header {
+    background-color: var(--admin-header-bg) !important;
+    border-bottom: 1px solid var(--admin-border) !important;
+}
+
+[data-theme="dark"] .main-header .navbar-nav .nav-link {
+    color: var(--admin-header-text) !important;
+}
+
+[data-theme="dark"] .main-header .navbar-nav .nav-link:hover {
+    background-color: var(--admin-sidebar-hover) !important;
+}
+
+[data-theme="dark"] .content-wrapper {
+    background-color: var(--admin-content-bg) !important;
+}
+
+[data-theme="dark"] .content-header h1 {
+    color: var(--admin-text) !important;
+}
+
+[data-theme="dark"] .content {
+    background-color: var(--admin-content-bg) !important;
+}
+
+[data-theme="dark"] .card {
+    background-color: var(--admin-card-bg) !important;
+    border-color: var(--admin-border) !important;
+    color: var(--admin-text) !important;
+}
+
+[data-theme="dark"] .card-header {
+    background-color: var(--admin-bg) !important;
+    border-bottom-color: var(--admin-border) !important;
+    color: var(--admin-text) !important;
+}
+
+[data-theme="dark"] .table {
+    color: var(--admin-text) !important;
+}
+
+[data-theme="dark"] .table thead th {
+    border-bottom-color: var(--admin-border) !important;
+    color: var(--admin-text) !important;
+}
+
+[data-theme="dark"] .table tbody td {
+    border-top-color: var(--admin-border) !important;
+}
+
+[data-theme="dark"] .form-control {
+    background-color: var(--admin-bg) !important;
+    border-color: var(--admin-border) !important;
+    color: var(--admin-text) !important;
+}
+
+[data-theme="dark"] .form-control:focus {
+    background-color: var(--admin-bg) !important;
+    border-color: var(--theme-primary) !important;
+    color: var(--admin-text) !important;
+}
+
+[data-theme="dark"] .form-control::placeholder {
+    color: var(--admin-text-muted) !important;
+}
+
+[data-theme="dark"] .btn-default {
+    background-color: var(--admin-bg) !important;
+    border-color: var(--admin-border) !important;
+    color: var(--admin-text) !important;
+}
+
+[data-theme="dark"] .btn-default:hover {
+    background-color: var(--admin-sidebar-hover) !important;
+    border-color: var(--admin-border) !important;
+    color: var(--admin-text) !important;
+}
+
+[data-theme="dark"] .main-footer {
+    background-color: var(--admin-header-bg) !important;
+    border-top-color: var(--admin-border) !important;
+    color: var(--admin-text) !important;
+}
+
+[data-theme="dark"] .alert {
+    background-color: var(--admin-card-bg) !important;
+    border-color: var(--admin-border) !important;
+    color: var(--admin-text) !important;
+}
+
+[data-theme="dark"] .pagination .page-link {
+    background-color: var(--admin-card-bg) !important;
+    border-color: var(--admin-border) !important;
+    color: var(--admin-text) !important;
+}
+
+[data-theme="dark"] .pagination .page-link:hover {
+    background-color: var(--admin-sidebar-hover) !important;
+    color: var(--admin-text) !important;
+}
+
+[data-theme="dark"] .pagination .page-item.active .page-link {
+    background-color: var(--theme-primary) !important;
+    border-color: var(--theme-primary) !important;
+}
+
+/* Material Symbols Filled Icons */
+.material-symbols-outlined.filled {
+    font-variation-settings: 'FILL' 1;
+}
+
+/* ===============================
+   Standardized Icon System
+   =============================== */
+
+/* Base icon settings */
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    vertical-align: middle;
+}
+
+.material-symbols-outlined.filled {
+    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* Standardized Icon Sizes */
+.icon-xs {
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+}
+
+.icon-sm {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+}
+
+.icon-base {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+}
+
+.icon-md {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+}
+
+.icon-lg {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+}
+
+.icon-xl {
+    font-size: 32px;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-2xl {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+}
+
+.icon-3xl {
+    font-size: 64px;
+    width: 64px;
+    height: 64px;
+}
+
+/* Icon color utilities */
+.icon-primary {
+    color: var(--theme-primary);
+}
+
+.icon-secondary {
+    color: var(--theme-text-secondary);
+}
+
+.icon-muted {
+    color: var(--theme-text-muted);
+}
+
+.icon-white {
+    color: #ffffff;
+}
+
+.icon-success {
+    color: var(--theme-success);
+}
+
+.icon-error {
+    color: var(--theme-error);
+}
+
+.icon-warning {
+    color: var(--theme-warning);
+}
+
+.icon-info {
+    color: var(--theme-info);
+}
+
+/* Icon transitions */
+.icon-transition {
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.icon-hover-primary:hover {
+    color: var(--theme-primary);
+}
+
+.icon-hover-scale:hover {
+    transform: scale(1.1);
+}
+
+/* Ensure sidebar text colors are always correct */
+nav.fixed,
+nav.fixed * {
+    color: inherit;
+}
+
+/* Force sidebar text to respect dark mode */
+.dark nav.fixed h1,
+.dark nav.fixed h2,
+.dark nav.fixed p,
+.dark nav.fixed a,
+.dark nav.fixed button,
+.dark nav.fixed span:not(.material-symbols-outlined) {
+    color: inherit !important;
+}
+
+/* --- Smooth Page Transitions --- */
+/* Page transition animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(10px);
+    }
+}
+
+/* Apply transition to main content areas */
+main,
+.flex-1,
+[class*="main-content"],
+.page-content {
+    animation: fadeIn 0.3s ease-in;
+}
+
+/* Smooth transition for page content */
+.page-transition {
+    transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+}
+
+.page-transition.fade-out {
+    opacity: 0;
+    transform: translateX(10px);
+}
+
+.page-transition.fade-in {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Sidebar Navigation Styles */
+/* Main sidebar container */
+.user-sidebar {
+    width: 20rem; /* w-80 */
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--theme-border);
+    background-color: var(--theme-surface);
+    flex-shrink: 0;
+}
+
+[data-theme="dark"] .user-sidebar {
+    border-right-color: var(--theme-border-dark);
+    background-color: var(--theme-bg);
+}
+
+/* Sidebar content container */
+.sidebar-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 1rem;
+    overflow-y: auto;
+}
+
+/* Sidebar branding section */
+.sidebar-branding {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--theme-border);
+}
+
+[data-theme="dark"] .sidebar-branding {
+    border-bottom-color: var(--theme-border-dark);
+}
+
+/* Sidebar user profile section */
+.sidebar-user-profile {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--theme-border);
+}
+
+[data-theme="dark"] .sidebar-user-profile {
+    border-bottom-color: var(--theme-border-dark);
+}
+
+/* Sidebar navigation links container */
+.sidebar-nav-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    flex: 1;
+}
+
+/* Sidebar navigation link */
+.sidebar-nav-link {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.75rem;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    color: var(--theme-text-secondary);
+    text-decoration: none;
+}
+
+.sidebar-nav-link:hover {
+    background-color: var(--theme-surface-hover);
+    color: var(--theme-text);
+}
+
+[data-theme="dark"] .sidebar-nav-link {
+    color: var(--theme-text-secondary);
+}
+
+[data-theme="dark"] .sidebar-nav-link:hover {
+    background-color: var(--theme-surface-hover);
+    color: var(--theme-text);
+}
+
+/* Active sidebar navigation link */
+.sidebar-nav-link.active {
+    background-color: var(--theme-surface-hover);
+    color: var(--theme-text);
+}
+
+[data-theme="dark"] .sidebar-nav-link.active {
+    background-color: var(--theme-surface-hover);
+    color: var(--theme-text);
+}
+
+/* Sidebar footer section */
+.sidebar-footer {
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid var(--theme-border);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+[data-theme="dark"] .sidebar-footer {
+    border-top-color: var(--theme-border-dark);
+}
+
+/* Sidebar footer item */
+.sidebar-footer-item {
+    padding: 0.25rem 1rem;
+}
+
+/* Page content fade transitions */
+.page-content-fade-in {
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: opacity 0.3s ease-in, transform 0.3s ease-in;
+}
+
+.page-content-fade-in.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.page-content-fade-out {
+    opacity: 0;
+    transform: translateX(10px);
+    transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+}

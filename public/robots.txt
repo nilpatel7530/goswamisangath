@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /profile/
+Disallow: /messages/
+Disallow: /notifications/
+Disallow: /requests/
+Disallow: /shortlist/
+
+Sitemap: https://goswamisangath.in/sitemap.xml

@@ -1,0 +1,2189 @@
+{
+	"info": {
+		"_postman_id": "goswamisangath-api-collection-v2",
+		"name": "GoswamiSangath API - Complete User Side Collection",
+		"description": "Complete API collection for GoswamiSangath user-side functionality including all dropdown and master data endpoints.\n\n**Features:**\n- Authentication (Register, Login, OTP, Google Login)\n- Profile Management\n- Matches & Search\n- Interest & Shortlist\n- Messages & Chat\n- Notifications\n- Membership & Payment (Razorpay Integration)\n- Reports\n\n**Payment Flow:**\n1. Create Payment Order: POST /api/v1/payment/create/{membershipId}\n2. Complete payment using Razorpay SDK with returned order_id and key_id\n3. Verify Payment: POST /api/v1/payment/verify with payment details\n\n**Collection Variables:**\n- `base_url`: API base URL (e.g., http://localhost:8000)\n- `api_token`: Auto-set after login\n- `payment_order_id`: Auto-set after creating payment order\n- `razorpay_key_id`: Auto-set after creating payment order\n- `payment_amount_paise`: Auto-set after creating payment order",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "goswamisangath",
+		"version": "2.1.0"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"full_name\": \"John Doe\",\n    \"email\": \"john@example.com\",\n    \"password\": \"password123\",\n    \"password_confirmation\": \"password123\",\n    \"mobile_number\": \"+919876543210\",\n    \"gender\": \"male\",\n    \"dob\": \"1990-01-15\",\n    \"country\": \"India\",\n    \"state\": \"Maharashtra\",\n    \"city\": \"Mumbai\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"register"
+							]
+						},
+						"description": "Register a new user account"
+					}
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData.status === 'success' && jsonData.data && jsonData.data.token) {",
+									"        pm.collectionVariables.set('api_token', jsonData.data.token);",
+									"        console.log('Token automatically saved to collection variable: api_token');",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"john@example.com\",\n    \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"login"
+							]
+						},
+						"description": "Login with email and password. Returns user data and API token. Token is automatically saved to collection variable 'api_token' for use in other requests."
+					}
+				},
+				{
+					"name": "Send OTP",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"mobile_number\": \"+919876543210\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/otp/send",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"otp",
+								"send"
+							]
+						},
+						"description": "Send OTP to mobile number for login"
+					}
+				},
+				{
+					"name": "Verify OTP",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"mobile_number\": \"+919876543210\",\n    \"otp\": \"123456\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/otp/verify",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"otp",
+								"verify"
+							]
+						},
+						"description": "Verify OTP and login/create account"
+					}
+				},
+				{
+					"name": "Google Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"access_token\": \"google_access_token_here\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/google/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"google",
+								"login"
+							]
+						},
+						"description": "Login with Google OAuth access token"
+					}
+				},
+				{
+					"name": "Get Current User",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{api_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/user",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user"
+							]
+						},
+						"description": "Get authenticated user details"
+					}
+				},
+				{
+					"name": "Refresh Token",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{api_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/refresh-token",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"refresh-token"
+							]
+						},
+						"description": "Refresh API token"
+					}
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{api_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/logout",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"logout"
+							]
+						},
+						"description": "Logout current user"
+					}
+				}
+			]
+		},
+		{
+			"name": "Master Data (Dropdowns)",
+			"item": [
+				{
+					"name": "Get Countries",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/countries",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"countries"
+							]
+						},
+						"description": "Get list of all countries"
+					}
+				},
+				{
+					"name": "Get States",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"country_id\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/states",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"states"
+							]
+						},
+						"description": "Get states by country ID"
+					}
+				},
+				{
+					"name": "Get Cities",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"state_id\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/cities",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"cities"
+							]
+						},
+						"description": "Get cities by state ID"
+					}
+				},
+				{
+					"name": "Get Highest Qualifications",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/highest-qualifications",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"highest-qualifications"
+							]
+						},
+						"description": "Get list of highest qualification options"
+					}
+				},
+				{
+					"name": "Get Educations by Qualification",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/educations/:qualificationId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"educations",
+								":qualificationId"
+							],
+							"variable": [
+								{
+									"key": "qualificationId",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Get education details by highest qualification ID"
+					}
+				},
+				{
+					"name": "Get Castes",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/castes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"castes"
+							]
+						},
+						"description": "Get list of all castes"
+					}
+				},
+				{
+					"name": "Get Mother Tongues",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/mother-tongues",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"mother-tongues"
+							]
+						},
+						"description": "Get list of all mother tongues"
+					}
+				},
+				{
+					"name": "Get Raashis",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/raashis",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"raashis"
+							]
+						},
+						"description": "Get list of all Raashis (Zodiac signs)"
+					}
+				},
+				{
+					"name": "Get Nakshatras",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/nakshatras",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"nakshatras"
+							]
+						},
+						"description": "Get list of all Nakshatras (Lunar mansions)"
+					}
+				},
+				{
+					"name": "Get Occupations",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/occupations",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"occupations"
+							]
+						},
+						"description": "Get list of all occupations"
+					}
+				}
+			]
+		},
+		{
+			"name": "Dashboard",
+			"item": [
+				{
+					"name": "Get Dashboard",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{api_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/dashboard",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"dashboard"
+							]
+						},
+						"description": "Get dashboard statistics and recommended matches"
+					}
+				}
+			]
+		},
+		{
+			"name": "Profile",
+			"item": [
+				{
+					"name": "Get My Profile",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{api_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/profile",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"profile"
+							]
+						},
+						"description": "Get current user's profile"
+					}
+				},
+				{
+					"name": "Update Profile",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{api_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"full_name\": \"John Doe Updated\",\n    \"mobile_number\": \"+919876543210\",\n    \"gender\": \"male\",\n    \"height\": \"5'10\"\",\n    \"weight\": \"70kg\",\n    \"dob\": \"1990-01-15\",\n    \"birth_time\": \"10:30 AM\",\n    \"birth_place\": \"Mumbai\",\n    \"raashi\": \"Aries\",\n    \"caste\": \"Brahmin\",\n    \"nakshtra\": \"Ashwini\",\n    \"naadi\": \"Adi\",\n    \"marital_status\": \"Never Married\",\n    \"mother_tongue\": \"Hindi\",\n    \"physically_handicap\": \"no\",\n    \"diet\": \"Vegetarian\",\n    \"languages_known\": \"Hindi,English\",\n    \"highest_education\": \"Bachelor's Degree\",\n    \"education_details\": \"B.Tech Computer Science\",\n    \"employed_in\": \"Private Company\",\n    \"occupation\": \"Software Engineer\",\n    \"annual_income\": \"500000\",\n    \"country\": \"India\",\n    \"state\": \"Maharashtra\",\n    \"city\": \"Mumbai\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/profile",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"profile"
+							]
+						},
+						"description": "Update user profile information"
+					}
+				},
+				{
+					"name": "Upload Profile Photo",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{api_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "photo",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/profile/photo",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"profile",
+								"photo"
+							]
+						},
+						"description": "Upload profile photo (max 5MB, formats: jpeg, png, jpg, webp)"
+					}
+				},
+				{
+					"name": "View Other User Profile",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{api_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/profile/:userId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"profile",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "2"
+								}
+							]
+						},
+						"description": "View another user's profile"
+					}
+				}
+			]
+		},
+		{
+			"name": "Matches",
+			"item": [
+				{
+					"name": "Get Matches",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{api_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/matches?age_from=25&age_to=35&city=Mumbai&state=Maharashtra&country=India&education=Bachelor's Degree&occupation=Engineer&per_page=20",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"matches"
+							],
+							"query": [
+								{
+									"key": "age_from",
+									"value": "25",
+									"description": "Minimum age"
+								},
+								{
+									"key": "age_to",
+									"value": "35",
+									"description": "Maximum age"
+								},
+								{
+									"key": "city",
+									"value": "Mumbai",
+									"description": "Filter by city"
+								},
+								{
+									"key": "state",
+									"value": "Maharashtra",
+									"description": "Filter by state"
+								},
+								{
+									"key": "country",
+									"value": "India",
+									"description": "Filter by country"
+								},
+								{
+									"key": "education",
+									"value": "Bachelor's Degree",
+									"description": "Filter by education"
+								},
+								{
+									"key": "occupation",
+									"value": "Engineer",
+									"description": "Filter by occupation"
+								},
+								{
+									"key": "per_page",
+									"value": "20",
+									"description": "Results per page"
+								}
+							]
+						},
+						"description": "Get matches with optional filters. Returns paginated results."
+					}
+				},
+				{
+					"name": "Get Recommended Matches",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{api_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/matches/recommended?limit=10",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"matches",
+								"recommended"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10",
+									"description": "Number of recommended matches"
+								}
+							]
+						},
+						"description": "Get recommended matches for the user"
+					}
+				}
+			]
+		},
+		{
+			"name": "Search",
+			"item": [
+				{
+					"name": "Search Profiles with Filters",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{api_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/search?gender=bride&age_from=24&age_to=32&city[]=Mumbai&city[]=Delhi&city[]=Bangalore&caste[]=Brahmin&caste[]=Kshatriya&education[]=Bachelor's Degree&education[]=Master's Degree&marital_status[]=Never Married&marital_status[]=Divorced&sort_by=newest&per_page=20",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"search"
+							],
+							"query": [
+								{
+									"key": "gender",
+									"value": "bride",
+									"description": "Looking For: 'bride' or 'female' for Bride, 'groom' or 'male' for Groom"
+								},
+								{
+									"key": "age_from",
+									"value": "24",
+									"description": "Minimum age (Age Range start)"
+								},
+								{
+									"key": "age_to",
+									"value": "32",
+									"description": "Maximum age (Age Range end)"
+								},
+								{
+									"key": "city[]",
+									"value": "Mumbai",
+									"description": "Location: City (can pass multiple cities as city[]=Mumbai&city[]=Delhi)"
+								},
+								{
+									"key": "city[]",
+									"value": "Delhi",
+									"description": "Additional city filter"
+								},
+								{
+									"key": "city[]",
+									"value": "Bangalore",
+									"description": "Additional city filter"
+								},
+								{
+									"key": "caste[]",
+									"value": "Brahmin",
+									"description": "Religion & Caste: Can pass multiple castes (Brahmin, Kshatriya, Vaishya, Shudra, Jain, Sikh, Muslim, Christian, Buddhist, Other)"
+								},
+								{
+									"key": "caste[]",
+									"value": "Kshatriya",
+									"description": "Additional caste filter"
+								},
+								{
+									"key": "education[]",
+									"value": "Bachelor's Degree",
+									"description": "Education: Can pass multiple (10th / SSLC, 12th / HSC, Diploma, Bachelor's Degree, Master's Degree, M.Phil, Ph.D / Doctorate, CA, CS, ICWA)"
+								},
+								{
+									"key": "education[]",
+									"value": "Master's Degree",
+									"description": "Additional education filter"
+								},
+								{
+									"key": "marital_status[]",
+									"value": "Never Married",
+									"description": "Marital Status: Can pass multiple (Never Married, Divorced, Widowed)"
+								},
+								{
+									"key": "marital_status[]",
+									"value": "Divorced",
+									"description": "Additional marital status filter"
+								},
+								{
+									"key": "sort_by",
+									"value": "newest",
+									"description": "Sort by: newest, age_asc, age_desc, relevance"
+								},
+								{
+									"key": "per_page",
+									"value": "20",
+									"description": "Results per page"
+								}
+							]
+						},
+						"description": "Advanced search with comprehensive filters:\n- Looking For: Bride/Groom (gender parameter)\n- Age Range: 24-32 Yrs (age_from, age_to)\n- Location: Multiple cities (city[] array)\n- Religion & Caste: Multiple options (caste[] array)\n- Education: Multiple levels (education[] array)\n- Marital Status: Never Married, Divorced, Widowed (marital_status[] array)\n\nAll array parameters support multiple selections by repeating the parameter with different values."
+					}
+				}
+			]
+		},
+		{
+			"name": "Interests & Requests",
+			"item": [
+				{
+					"name": "Send Interest",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{api_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/interest/:userId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"interest",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "2"
+								}
+							]
+						},
+						"description": "Send interest to a user"
+					}
+				},
+				{
+					"name": "Accept Interest",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{api_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/interest/:interestId/accept",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"interest",
+								":interestId",
+								"accept"
+							],
+							"variable": [
+								{
+									"key": "interestId",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Accept an incoming interest request"
+					}
+				},
+				{
+					"name": "Decline Interest",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{api_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/interest/:interestId/decline",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"interest",
+								":interestId",
+								"decline"
+							],
+							"variable": [
+								{
+									"key": "interestId",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Decline an incoming interest request"
+					}
+				},
+				{
+					"name": "Get All Requests",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{api_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/requests?type=incoming",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"requests"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "incoming",
+									"description": "Type: 'incoming' or 'sent'"
+								}
+							]
+						},
+						"description": "Get all requests (incoming or sent)"
+					}
+				},
+				{
+					"name": "Get Incoming Requests",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{api_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/requests/incoming",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"requests",
+								"incoming"
+							]
+						},
+						"description": "Get pending incoming interest requests"
+					}
+				},
+				{
+					"name": "Get Sent Requests",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{api_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/requests/sent",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"requests",
+								"sent"
+							]
+						},
+						"description": "Get all sent interest requests (pending, accepted, declined)"
+					}
+				},
+				{
+					"name": "Toggle Shortlist",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{api_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/shortlist/:userId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"shortlist",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "2"
+								}
+							]
+						},
+						"description": "Add or remove user from shortlist"
+					}
+				},
+				{
+					"name": "Get Shortlist",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{api_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/shortlist",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"shortlist"
+							]
+						},
+						"description": "Get all shortlisted users"
+					}
+				}
+			]
+		},
+		{
+			"name": "Messages",
+			"item": [
+				{
+					"name": "Get Conversations",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{api_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/messages",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"messages"
+							]
+						},
+						"description": "Get list of all conversations (users with accepted interests)"
+					}
+				},
+				{
+					"name": "Get Chat",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{api_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/messages/chat/:userId?last_message_id=0",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"messages",
+								"chat",
+								":userId"
+							],
+							"query": [
+								{
+									"key": "last_message_id",
+									"value": "0",
+									"description": "Optional: Get messages after this ID"
+								}
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "2"
+								}
+							]
+						},
+						"description": "Get chat messages with a specific user"
+					}
+				},
+				{
+					"name": "Send Message",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{api_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"message\": \"Hello! How are you?\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/messages/send/:userId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"messages",
+								"send",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "2"
+								}
+							]
+						},
+						"description": "Send a message to a user (requires accepted interest)"
+					}
+				},
+				{
+					"name": "Get New Messages",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{api_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/messages/new/:userId?last_message_id=100",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"messages",
+								"new",
+								":userId"
+							],
+							"query": [
+								{
+									"key": "last_message_id",
+									"value": "100",
+									"description": "Get messages after this ID"
+								}
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "2"
+								}
+							]
+						},
+						"description": "Get new messages from a user since last_message_id"
+					}
+				},
+				{
+					"name": "Mark Message as Read",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{api_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/messages/:messageId/read",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"messages",
+								":messageId",
+								"read"
+							],
+							"variable": [
+								{
+									"key": "messageId",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Mark a specific message as read"
+					}
+				}
+			]
+		},
+		{
+			"name": "Notifications",
+			"item": [
+				{
+					"name": "Get Notifications",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{api_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/notifications?filter=all&page=1&per_page=20",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"notifications"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "all",
+									"description": "Filter: all, matches, interests, messages, views"
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Page number"
+								},
+								{
+									"key": "per_page",
+									"value": "20",
+									"description": "Results per page"
+								}
+							]
+						},
+						"description": "Get paginated notifications with optional filter"
+					}
+				},
+				{
+					"name": "Get Unread Count",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{api_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/notifications/unread-count",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"notifications",
+								"unread-count"
+							]
+						},
+						"description": "Get count of unread notifications and messages"
+					}
+				},
+				{
+					"name": "Mark Notification as Read",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{api_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/notifications/:notificationId/read",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"notifications",
+								":notificationId",
+								"read"
+							],
+							"variable": [
+								{
+									"key": "notificationId",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Mark a specific notification as read"
+					}
+				},
+				{
+					"name": "Mark All Notifications as Read",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{api_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/notifications/read-all",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"notifications",
+								"read-all"
+							]
+						},
+						"description": "Mark all notifications as read"
+					}
+				},
+				{
+					"name": "Update Notification Settings",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{api_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email_notifications\": true,\n    \"push_notifications\": true,\n    \"interest_notifications\": true,\n    \"message_notifications\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/notifications/settings",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"notifications",
+								"settings"
+							]
+						},
+						"description": "Update notification preferences"
+					}
+				}
+			]
+		},
+		{
+			"name": "Membership",
+			"item": [
+				{
+					"name": "Get All Memberships",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{api_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/memberships",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"memberships"
+							]
+						},
+						"description": "Get list of all available membership plans"
+					}
+				},
+				{
+					"name": "Get Current Membership",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{api_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/memberships/current",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"memberships",
+								"current"
+							]
+						},
+						"description": "Get user's current active membership details"
+					}
+				},
+				{
+					"name": "Subscribe to Membership",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{api_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/memberships/:membershipId/subscribe",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"memberships",
+								":membershipId",
+								"subscribe"
+							],
+							"variable": [
+								{
+									"key": "membershipId",
+									"value": "1"
+								}
+							]
+						},
+						"description": "Subscribe to a membership plan (for free plans only - redirects to payment for paid plans)"
+					}
+				}
+			]
+		},
+		{
+			"name": "Payment",
+			"item": [
+				{
+					"name": "Create Payment Order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData.status === 'success' && jsonData.data) {",
+									"        // Store order_id for verify payment endpoint",
+									"        if (jsonData.data.order_id) {",
+									"            pm.collectionVariables.set('payment_order_id', jsonData.data.order_id);",
+									"        }",
+									"        if (jsonData.data.key_id) {",
+									"            pm.collectionVariables.set('razorpay_key_id', jsonData.data.key_id);",
+									"        }",
+									"        if (jsonData.data.amount_in_paise) {",
+									"            pm.collectionVariables.set('payment_amount_paise', jsonData.data.amount_in_paise);",
+									"        }",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{api_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/payment/create/:membershipId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"payment",
+								"create",
+								":membershipId"
+							],
+							"variable": [
+								{
+									"key": "membershipId",
+									"value": "1",
+									"description": "ID of the membership plan to purchase (e.g., 1=Bronze, 2=Silver, 3=Gold, 4=Platinum)"
+								}
+							]
+						},
+						"description": "Create a Razorpay payment order for a membership plan. Returns order_id, amount, and key_id needed for Razorpay checkout.\n\n**Response includes:**\n- `order_id`: Razorpay order ID (stored in collection variable `payment_order_id`)\n- `amount`: Amount in rupees\n- `amount_in_paise`: Amount in paise (for Razorpay SDK, stored in `payment_amount_paise`)\n- `key_id`: Razorpay key ID for frontend (stored in `razorpay_key_id`)\n- `currency`: Currency code (INR)\n\n**Usage:**\n1. Call this endpoint to create payment order\n2. Use the returned `order_id`, `amount_in_paise`, and `key_id` with Razorpay SDK\n3. After payment, call `/payment/verify` endpoint with payment details\n\n**Note:** For free plans (price = 0), membership is activated directly without payment."
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{api_token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/api/v1/payment/create/1",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"payment",
+										"create",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"success\",\n    \"message\": \"Payment order created successfully\",\n    \"data\": {\n        \"order_id\": \"order_MN8xYqZ8xYqZ8\",\n        \"amount\": 250.00,\n        \"amount_in_paise\": 25000,\n        \"currency\": \"INR\",\n        \"key_id\": \"rzp_test_S9CwEPw5v224vT\",\n        \"membership\": {\n            \"id\": 1,\n            \"name\": \"Bronze\",\n            \"price\": 250.00\n        }\n    }\n}"
+						},
+						{
+							"name": "Error - Payment Not Configured",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{api_token}}",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/api/v1/payment/create/1",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"payment",
+										"create",
+										"1"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"error\",\n    \"message\": \"Payment gateway is not configured. Please contact administrator.\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Verify Payment",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Auto-populate order_id from collection variable if available",
+									"var orderId = pm.collectionVariables.get('payment_order_id');",
+									"if (orderId) {",
+									"    var body = JSON.parse(pm.request.body.raw);",
+									"    body.razorpay_order_id = orderId;",
+									"    pm.request.body.raw = JSON.stringify(body, null, 2);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{api_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"razorpay_order_id\": \"{{payment_order_id}}\",\n    \"razorpay_payment_id\": \"pay_xxxxxxxxxxxxx\",\n    \"razorpay_signature\": \"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/payment/verify",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"payment",
+								"verify"
+							]
+						},
+						"description": "Verify and process payment after Razorpay payment is completed.\n\n**Required Parameters:**\n- `razorpay_order_id`: Order ID from create payment order response (auto-filled from collection variable)\n- `razorpay_payment_id`: Payment ID from Razorpay payment response (from Razorpay SDK)\n- `razorpay_signature`: Signature from Razorpay payment response (from Razorpay SDK)\n\n**Process:**\n1. User completes payment in Razorpay checkout\n2. Razorpay SDK returns payment details with signature\n3. Call this endpoint with payment details\n4. Server verifies signature and activates membership\n5. Returns activated membership details\n\n**Note:**\n- The `razorpay_order_id` is automatically populated from the previous \"Create Payment Order\" request\n- Replace `razorpay_payment_id` and `razorpay_signature` with actual values from Razorpay payment response\n\n**Response:**\n- Returns activated membership details on success\n- Includes transaction information"
+					},
+					"response": [
+						{
+							"name": "Success Response",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{api_token}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"razorpay_order_id\": \"order_MN8xYqZ8xYqZ8\",\n    \"razorpay_payment_id\": \"pay_MN8xYqZ8xYqZ8\",\n    \"razorpay_signature\": \"a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/v1/payment/verify",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"payment",
+										"verify"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"success\",\n    \"message\": \"Payment successful! Membership activated.\",\n    \"data\": {\n        \"membership\": {\n            \"id\": 1,\n            \"name\": \"Bronze\",\n            \"price\": 250.00,\n            \"visits_allowed\": 10,\n            \"expires_at\": \"2026-02-27 00:00:00\"\n        },\n        \"transaction\": {\n            \"order_id\": \"order_MN8xYqZ8xYqZ8\",\n            \"payment_id\": \"pay_MN8xYqZ8xYqZ8\",\n            \"status\": \"success\"\n        }\n    }\n}"
+						},
+						{
+							"name": "Error - Invalid Signature",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{api_token}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"razorpay_order_id\": \"order_MN8xYqZ8xYqZ8\",\n    \"razorpay_payment_id\": \"pay_MN8xYqZ8xYqZ8\",\n    \"razorpay_signature\": \"invalid_signature\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/v1/payment/verify",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"payment",
+										"verify"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"error\",\n    \"message\": \"Payment verification failed. Invalid signature.\"\n}"
+						},
+						{
+							"name": "Error - Transaction Not Found",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{api_token}}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"razorpay_order_id\": \"order_invalid\",\n    \"razorpay_payment_id\": \"pay_xxxxxxxxxxxxx\",\n    \"razorpay_signature\": \"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/v1/payment/verify",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"payment",
+										"verify"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"error\",\n    \"message\": \"Transaction not found.\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Reports",
+			"item": [
+				{
+					"name": "Get Report Form Data",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{api_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/report/:userId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"report",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "2"
+								}
+							]
+						},
+						"description": "Get report form data including reported user info and available reasons"
+					}
+				},
+				{
+					"name": "Submit Report",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{api_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"reason\": \"spam_scam\",\n    \"details\": \"This user is sending spam messages\",\n    \"block_user\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/report/:userId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"report",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "2"
+								}
+							]
+						},
+						"description": "Submit a report against a user. Reason options: spam_scam, harassment, inappropriate_photos, underage, other"
+					}
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000",
+			"type": "string"
+		},
+		{
+			"key": "api_token",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

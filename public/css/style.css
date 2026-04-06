@@ -1,0 +1,243 @@
+/* ===============================
+   TrueUnion Website Stylesheet
+   =============================== */
+
+/* Note: theme.css should be loaded before this file in the HTML */
+
+/* --- Legacy Variable Mappings (for backward compatibility) --- */
+:root {
+    --font-primary: 'Inter', sans-serif;
+
+    /* Map old variables to new theme variables */
+    --clr-bg: var(--theme-bg-primary);
+    --clr-text: var(--theme-text-primary);
+    --clr-muted: var(--theme-text-muted);
+
+    --clr-primary: var(--theme-primary);
+    --clr-primary-dark: var(--theme-primary-dark);
+    --clr-secondary: var(--theme-secondary);
+
+    --clr-accent: var(--theme-accent);
+    --clr-accent-light: var(--theme-accent-light);
+
+    --clr-border: var(--theme-border);
+    --clr-card-bg: var(--theme-bg-card);
+
+    --radius: 12px;
+    --radius-lg: 16px;
+
+    --shadow-sm: var(--theme-shadow-sm);
+    --shadow-md: var(--theme-shadow-md);
+    --shadow-lg: var(--theme-shadow-lg);
+}
+
+/* --- Body --- */
+body {
+    font-family: var(--font-primary);
+    color: var(--clr-text);
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background: var(--clr-bg);
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- Main Layout --- */
+main {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    padding: 2.5rem 1rem;
+}
+
+/* --- Loader --- */
+.loader-wrapper {
+    position: fixed;
+    inset: 0;
+    background: var(--theme-bg-overlay);
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+.loader-wrapper.show {
+    opacity: 1;
+    visibility: visible;
+}
+.loader {
+    position: relative;
+    width: 200px;
+    height: 100px;
+}
+.loader span {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    font-size: 2.4rem;
+    letter-spacing: 5px;
+    top: 50%;
+    left: 50%;
+    font-weight: 700;
+}
+.loader span:nth-child(1) {
+    color: transparent;
+    -webkit-text-stroke: 0.3px rgb(0, 57, 244);
+}
+.loader span:nth-child(2) {
+    color: rgb(0, 4, 255);
+    -webkit-text-stroke: 1px rgb(17, 0, 255);
+    animation: waveClip 3s ease-in-out infinite;
+}
+@keyframes waveClip {
+    0%, 100% {
+        clip-path: polygon(0 45%, 15% 44%, 32% 50%, 54% 60%, 70% 61%, 84% 59%, 100% 52%, 100% 100%, 0% 100%);
+    }
+    50% {
+        clip-path: polygon(0 60%, 16% 65%, 34% 66%, 51% 62%, 67% 50%, 84% 45%, 100% 46%, 100% 100%, 0% 100%);
+    }
+}
+
+/* --- Header & Navigation --- */
+header {
+    background-color: var(--theme-bg-overlay) !important;
+    backdrop-filter: blur(10px);
+}
+
+.header-logo {
+    font-size: 1.75rem;
+    font-weight: 800;
+    background: -webkit-linear-gradient(var(--theme-primary), var(--theme-primary-dark));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.nav-link {
+    color: var(--theme-text-muted);
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+.nav-link:hover,
+.nav-link.active {
+    color: var(--theme-primary);
+}
+
+/* --- Card Containers --- */
+.content-container,
+.form-container,
+.testimonial-card {
+    background: var(--theme-bg-card);
+    backdrop-filter: blur(15px);
+    border: 1px solid var(--theme-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--theme-shadow-md);
+    padding: 2.5rem;
+    width: 100%;
+    color: var(--theme-text-primary);
+}
+
+/* --- Forms --- */
+.form-label {
+    color: var(--theme-text-secondary);
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+.form-input,
+.form-select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 2px solid var(--theme-border);
+    border-radius: var(--radius);
+    transition: all 0.3s ease;
+    font-size: 1rem;
+    background: var(--theme-bg-secondary);
+    color: var(--theme-text-primary);
+}
+.form-input:focus,
+.form-select:focus {
+    outline: none;
+    border-color: var(--theme-primary);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+}
+.form-select {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.75rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+    appearance: none;
+}
+
+/* --- Buttons --- */
+button,
+.submit-btn,
+.select-btn {
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    border-radius: var(--radius);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    padding: 0.8rem 1.5rem;
+    width: 100%;
+    text-align: center;
+}
+.submit-btn {
+    background: linear-gradient(90deg, var(--theme-accent-light), var(--theme-accent));
+    color: var(--theme-text-inverse);
+    font-weight: 700;
+    box-shadow: 0 4px 20px rgba(249, 115, 22, 0.3);
+}
+.submit-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 25px rgba(249, 115, 22, 0.45);
+}
+.select-btn {
+    background: linear-gradient(90deg, var(--theme-primary), var(--theme-secondary));
+    color: var(--theme-text-inverse);
+    box-shadow: 0 4px 20px rgba(67, 56, 202, 0.3);
+}
+.select-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 25px rgba(67, 56, 202, 0.45);
+}
+.select-btn.popular-btn {
+    background: linear-gradient(90deg, var(--theme-accent-light), var(--theme-accent));
+    box-shadow: 0 4px 20px rgba(249, 115, 22, 0.35);
+}
+.select-btn.popular-btn:hover {
+    box-shadow: 0 6px 25px rgba(249, 115, 22, 0.5);
+}
+
+/* --- Pricing --- */
+.pricing-card {
+    border: 1px solid var(--theme-border);
+    border-radius: var(--radius);
+    padding: 2rem;
+    background: var(--theme-bg-card);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    color: var(--theme-text-primary);
+}
+.pricing-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--theme-shadow-lg);
+}
+.pricing-card.popular {
+    border-color: var(--theme-primary);
+    transform: scale(1.05);
+}
+
+/* --- Footer --- */
+.site-footer {
+    background: var(--theme-bg-overlay);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid var(--theme-border);
+    width: 100%;
+    flex-shrink: 0;
+    padding: 1.5rem;
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--theme-text-muted);
+}
