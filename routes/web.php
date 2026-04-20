@@ -120,7 +120,7 @@ Route::middleware('guest')->group(function () {
 
 // --- Google Auth Routes ---
 Route::get('auth/google', [GoogleController::class, 'redirectToGoogle'])->name('google.login');
-Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
+Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback'])->name('google.callback');
 
 // --- Authenticated User Routes ---
 Route::middleware('auth')->group(function () {

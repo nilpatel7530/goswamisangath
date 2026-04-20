@@ -12,7 +12,13 @@ class GoogleController extends Controller
     // Redirect the user to the Google authentication page.
     public function redirectToGoogle()
     {
-        return Socialite::driver('google')->redirect();
+        \Log::info('Google Login redirection initiated.');
+        try {
+            return Socialite::driver('google')->redirect();
+        } catch (\Exception $e) {
+            \Log::error('Google Redirect Error: ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
+            return redirect('/login')->with('error', 'Unable to connect to Google: ' . $e->getMessage());
+        }
     }
 
     // Obtain the user information from Google.
@@ -21,23 +27,26 @@ class GoogleController extends Controller
         try {
             $googleUser = Socialite::driver('google')->user();
 
-            // Find or create a user in your database
-            $user = User::firstOrNew(['google_id' => $googleUser->id]);
+            // Check if user exists by email or google_id
+            $user = User::where('email', $googleUser->email)
+                        ->orWhere('google_id', $googleUser->id)
+                        ->first();
             
-            // If user doesn't exist, set attributes and save (will trigger created event)
-            if (!$user->exists) {
-                $user->fill([
-                    'full_name' => $googleUser->name,
-                    'email' => $googleUser->email,
-                    'password' => bcrypt(str()->random(16))
+            // If user doesn't exist, redirect to the signup page
+            if (!$user) {
+                session()->put('google_prefill', [
+                    'email' => $googleUser->getEmail(),
+                    'name' => $googleUser->getName()
                 ]);
-                $user->save(); // This will trigger the created event and assign free plan
+                
+                return redirect()->route('signup')
+                    ->with('error', 'Account not found. Please register to continue.');
             } else {
-                // User exists, update if needed
-                $user->update([
-                    'full_name' => $googleUser->name,
-                    'email' => $googleUser->email,
-                ]);
+                // User exists, link google_id if it's missing
+                if (empty($user->google_id)) {
+                    $user->google_id = $googleUser->id;
+                    $user->save();
+                }
                 
                 // Ensure user has free plan if they don't have active membership
                 $membershipService = app(\App\Services\MembershipService::class);

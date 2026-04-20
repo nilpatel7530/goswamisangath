@@ -86,9 +86,14 @@ class PageController extends Controller
         $motherTongues = DB::table('mothertongue_master')->where('status', 1)->get();
         $hobbies = DB::table('hobbies')->where('status', 1)->orderBy('name')->get();
 
+        // Check for Google prefill data
+        $prefill = session()->pull('google_prefill', []);
         
         // Create a new user instance for the form
         $user = new \App\Models\User();
+        if (isset($prefill['email'])) $user->email = $prefill['email'];
+        if (isset($prefill['name'])) $user->full_name = $prefill['name'];
+
         return view('pages.signup', compact('highest_qualifications', 'occupations', 'countries', 'raashis', 'user', 'motherTongues', 'hobbies'));
     }
 

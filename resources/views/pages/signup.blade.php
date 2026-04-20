@@ -223,7 +223,7 @@
                                 <label class="text-slate-700 dark:text-gray-200 text-sm font-medium"><span data-translate="Full Name">{{ __('Full Name') }}</span> <span class="text-primary">*</span></label>
                                 <input type="text" 
                                        name="full_name" 
-                                       value="{{ old('full_name') }}"
+                                       value="{{ old('full_name', $user->full_name) }}"
                                        class="w-full h-12 rounded-lg bg-gray-50 dark:bg-[#181211] border border-gray-200 dark:border-[#543f3b] pl-4 pr-10 text-slate-900 dark:text-white focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder-gray-400 dark:placeholder-gray-600 font-body" 
                                        placeholder="{{ __('Enter your full name') }}" data-translate-placeholder="Enter your full name"
                                        required/>
@@ -245,7 +245,7 @@
                                 <label class="text-slate-700 dark:text-gray-200 text-sm font-medium"><span data-translate="Email">{{ __('Email') }}</span> <span class="text-primary">*</span></label>
                                 <input type="email" 
                                        name="email" 
-                                       value="{{ old('email') }}"
+                                       value="{{ old('email', $user->email) }}"
                                        class="w-full h-12 rounded-lg bg-gray-50 dark:bg-[#181211] border border-gray-200 dark:border-[#543f3b] pl-4 pr-10 text-slate-900 dark:text-white focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder-gray-400 dark:placeholder-gray-600 font-body" 
                                        placeholder="{{ __('your@email.com') }}"
                                        required/>

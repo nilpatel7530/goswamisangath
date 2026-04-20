@@ -35,6 +35,8 @@ class DemoModeMiddleware
                 'register.post',
                 'signup',
                 'signup.store',
+                'google.login',
+                'google.callback',
                 'logout',
                 'profile.complete',
                 'profile.complete.store',
