@@ -269,17 +269,28 @@ class AuthController extends Controller
             // Get user info from Google
             $googleUser = Socialite::driver('google')->userFromToken($validated['access_token']);
 
-            // Find or create user
-            $user = User::firstOrNew(['google_id' => $googleUser->id]);
+            // Find user by google_id or email
+            $user = User::where('google_id', $googleUser->id)
+                ->orWhere('email', $googleUser->email)
+                ->first();
             
-            if (!$user->exists) {
-                $user->fill([
-                    'full_name' => $googleUser->name,
-                    'email' => $googleUser->email,
-                    'password' => Hash::make(Str::random(16)),
-                ]);
-                $user->save();
+            if (!$user) {
+                // Return data for registration pre-fill
+                return response()->json([
+                    'status' => 'user_not_found',
+                    'message' => 'User not found. Please register to continue.',
+                    'data' => [
+                        'email' => $googleUser->email,
+                        'full_name' => $googleUser->name,
+                    ]
+                ], 404);
+            }
+
+            // Link google_id if not already set
+            if (!$user->google_id) {
+                $user->update(['google_id' => $googleUser->id]);
             } else {
+                // Update profile info if needed
                 $user->update([
                     'full_name' => $googleUser->name,
                     'email' => $googleUser->email,
