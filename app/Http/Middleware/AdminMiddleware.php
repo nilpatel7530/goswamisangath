@@ -23,7 +23,7 @@ class AdminMiddleware
             if ($request->expectsJson()) {
                 return response()->json(['message' => 'Unauthorized'], 401);
             }
-            return redirect()->route('login')->with('error', 'Please log in to access this page.');
+            return redirect()->route('admin.login')->with('error', 'Please log in as an administrator to access this page.');
         }
 
         // Get fresh user data from database

@@ -198,22 +198,32 @@
                     <section class="flex flex-col gap-6">
                         <div class="border-b border-gray-100 dark:border-[#392b28] pb-4 flex items-center gap-3">
                             <span class="material-symbols-outlined text-primary">person</span>
-                            <h3 class="text-slate-900 dark:text-white text-xl font-bold leading-tight" data-translate="Basic Information">{{ __('Basic Information') }}</h3>
+                            <div class="flex flex-col">
+                                <span class="text-[10px] text-primary font-bold uppercase tracking-wider" data-translate="Person">{{ __('Person') }}</span>
+                                <h3 class="text-slate-900 dark:text-white text-xl font-bold leading-tight" data-translate="Basic Information">{{ __('Basic Information') }}</h3>
+                            </div>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="flex flex-col gap-2 md:col-span-2">
                                 <label class="text-slate-700 dark:text-gray-200 text-sm font-medium" data-translate="Profile Picture">{{ __('Profile Picture') }}</label>
                                 <div class="flex items-center gap-4">
-                                    <div class="relative">
-                                        <img id="profile-preview" src="https://placehold.co/120x120/e2f0cb/702963?text=Preview" alt="Profile Preview" class="w-24 h-24 rounded-full border-2 border-gray-300 dark:border-[#543f3b] object-cover">
+                                    <div class="flex flex-col items-center gap-2">
+                                        <img id="profile-preview" src="https://placehold.co/120x120/e2f0cb/702963?text=Preview" alt="{{ __('Profile Preview') }}" data-translate-alt="Profile Preview" class="w-24 h-24 rounded-full border-2 border-gray-300 dark:border-[#543f3b] object-cover">
+                                        <span class="text-[10px] text-gray-500 uppercase tracking-tight font-medium" data-translate="Profile Preview">{{ __('Profile Preview') }}</span>
                                     </div>
                                     <div class="flex-1">
-                                        <input type="file" 
-                                               id="profile_image_input" 
-                                               name="profile_image_input" 
-                                               accept="image/*"
-                                               class="w-full h-12 rounded-lg bg-gray-50 dark:bg-[#181211] border border-gray-200 dark:border-[#543f3b] px-4 py-2 text-slate-900 dark:text-white focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body text-sm"
-                                               onchange="previewProfileImage(this)"/>
+                                        <div class="relative group">
+                                            <input type="file" 
+                                                   id="profile_image_input" 
+                                                   name="profile_image_input" 
+                                                   accept="image/*"
+                                                   class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                                                   onchange="handleFileSelect(this)"/>
+                                            <div class="flex items-center gap-3 w-full h-12 rounded-lg bg-gray-50 dark:bg-[#181211] border border-gray-200 dark:border-[#543f3b] px-4 py-2 text-slate-500 dark:text-gray-400 font-body text-sm group-hover:border-primary transition-colors">
+                                                <span class="material-symbols-outlined text-[20px] text-primary">upload_file</span>
+                                                <span id="file-name" data-translate="No file chosen">{{ __('No file chosen') }}</span>
+                                            </div>
+                                        </div>
                                         <input type="hidden" name="profile_image" id="profile_image_data">
                                         <p class="text-xs text-gray-500 dark:text-gray-400 mt-1" data-translate="Upload your profile picture (optional)">{{ __('Upload your profile picture (optional)') }}</p>
                                     </div>
@@ -247,7 +257,7 @@
                                        name="email" 
                                        value="{{ old('email', $user->email) }}"
                                        class="w-full h-12 rounded-lg bg-gray-50 dark:bg-[#181211] border border-gray-200 dark:border-[#543f3b] pl-4 pr-10 text-slate-900 dark:text-white focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder-gray-400 dark:placeholder-gray-600 font-body" 
-                                       placeholder="{{ __('your@email.com') }}"
+                                       placeholder="{{ __('your@email.com') }}" data-translate-placeholder="your@email.com"
                                        required/>
                             </div>
                             <div class="flex flex-col gap-2">
@@ -256,7 +266,7 @@
                                        name="mobile_number" 
                                        value="{{ old('mobile_number') }}"
                                        class="w-full h-12 rounded-lg bg-gray-50 dark:bg-[#181211] border border-gray-200 dark:border-[#543f3b] pl-4 pr-10 text-slate-900 dark:text-white focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder-gray-400 dark:placeholder-gray-600 font-body" 
-                                       placeholder="{{ __('+91 9876543210') }}"
+                                       placeholder="{{ __('+91 9876543210') }}" data-translate-placeholder="+91 9876543210"
                                        required/>
                             </div>
                             <div class="flex flex-col gap-2">
@@ -265,7 +275,7 @@
                                        id="password"
                                        name="password" 
                                        class="w-full h-12 rounded-lg bg-gray-50 dark:bg-[#181211] border border-gray-200 dark:border-[#543f3b] pl-4 pr-10 text-slate-900 dark:text-white focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder-gray-400 dark:placeholder-gray-600 font-body" 
-                                       placeholder="{{ __('Minimum 8 characters') }}"
+                                       placeholder="{{ __('Minimum 8 characters') }}" data-translate-placeholder="Minimum 8 characters"
                                        required/>
                             </div>
                             <div class="flex flex-col gap-2">
@@ -275,7 +285,7 @@
                                            id="password_confirmation"
                                            name="password_confirmation" 
                                            class="w-full h-12 rounded-lg bg-gray-50 dark:bg-[#181211] border border-gray-200 dark:border-[#543f3b] pl-4 pr-10 text-slate-900 dark:text-white focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all placeholder-gray-400 dark:placeholder-gray-600 font-body" 
-                                           placeholder="{{ __('Confirm your password') }}"
+                                           placeholder="{{ __('Confirm your password') }}" data-translate-placeholder="Confirm your password"
                                            required/>
                                     <div id="password-match-indicator" class="absolute right-3 top-3 hidden">
                                         <span class="material-symbols-outlined text-green-500" id="match-icon">check_circle</span>
@@ -285,15 +295,15 @@
                                 <p id="password-error-message" class="text-xs text-red-500 mt-1 hidden" data-translate="Passwords do not match">{{ __('Passwords do not match') }}</p>
                             </div>
                             <div class="flex flex-col gap-2 md:col-span-2">
-                                <label class="text-slate-700 dark:text-gray-200 text-sm font-medium">{{ __('Date of Birth') }} <span class="text-primary">*</span></label>
+                                <label class="text-slate-700 dark:text-gray-200 text-sm font-medium"><span data-translate="Date of Birth">{{ __('Date of Birth') }}</span> <span class="text-primary">*</span></label>
                                 <div class="grid grid-cols-3 gap-4">
                                     <div class="flex flex-col gap-2">
-                                        <label class="text-xs text-gray-500 dark:text-gray-400">{{ __('Day') }}</label>
+                                        <label class="text-xs text-gray-500 dark:text-gray-400" data-translate="Day">{{ __('Day') }}</label>
                                         <div class="relative">
                                             <select name="birth_day" 
                                                     class="w-full h-12 rounded-lg bg-gray-50 dark:bg-[#181211] border border-gray-200 dark:border-[#543f3b] pl-4 pr-10 text-slate-900 dark:text-white focus:border-primary focus:ring-1 focus:ring-primary outline-none appearance-none transition-all cursor-pointer font-body" 
                                                     required>
-                                                <option disabled selected value="">{{ __('Day') }}</option>
+                                                <option disabled selected value="" data-translate="Day">{{ __('Day') }}</option>
                                                 @for($i = 1; $i <= 31; $i++)
                                                     <option value="{{ $i }}" {{ old('birth_day') == $i ? 'selected' : '' }}>{{ $i }}</option>
                                                 @endfor
@@ -302,26 +312,27 @@
                                         </div>
                                     </div>
                                     <div class="flex flex-col gap-2">
-                                        <label class="text-xs text-gray-500 dark:text-gray-400">{{ __('Month') }}</label>
+                                        <label class="text-xs text-gray-500 dark:text-gray-400" data-translate="Month">{{ __('Month') }}</label>
                                         <div class="relative">
                                             <select name="birth_month" 
                                                     class="w-full h-12 rounded-lg bg-gray-50 dark:bg-[#181211] border border-gray-200 dark:border-[#543f3b] pl-4 pr-10 text-slate-900 dark:text-white focus:border-primary focus:ring-1 focus:ring-primary outline-none appearance-none transition-all cursor-pointer font-body" 
                                                     required>
-                                                <option disabled selected value="">{{ __('Month') }}</option>
+                                                <option disabled selected value="" data-translate="Month">{{ __('Month') }}</option>
                                                 @for($i = 1; $i <= 12; $i++)
-                                                    <option value="{{ $i }}" {{ old('birth_month') == $i ? 'selected' : '' }}>{{ date('F', mktime(0, 0, 0, $i, 1)) }}</option>
+                                                    @php $monthName = date('F', mktime(0, 0, 0, $i, 1)); @endphp
+                                                    <option value="{{ $i }}" {{ old('birth_month') == $i ? 'selected' : '' }} data-translate="{{ $monthName }}">{{ __($monthName) }}</option>
                                                 @endfor
                                             </select>
                                             <span class="material-symbols-outlined absolute right-3 top-3 text-gray-400 pointer-events-none">expand_more</span>
                                         </div>
                                     </div>
                                     <div class="flex flex-col gap-2">
-                                        <label class="text-xs text-gray-500 dark:text-gray-400">{{ __('Year') }}</label>
+                                        <label class="text-xs text-gray-500 dark:text-gray-400" data-translate="Year">{{ __('Year') }}</label>
                                         <div class="relative">
                                             <select name="birth_year" 
                                                     class="w-full h-12 rounded-lg bg-gray-50 dark:bg-[#181211] border border-gray-200 dark:border-[#543f3b] pl-4 pr-10 text-slate-900 dark:text-white focus:border-primary focus:ring-1 focus:ring-primary outline-none appearance-none transition-all cursor-pointer font-body" 
                                                     required>
-                                                <option disabled selected value="">{{ __('Year') }}</option>
+                                                <option disabled selected value="" data-translate="Year">{{ __('Year') }}</option>
                                                 @for($i = date('Y') - 18; $i >= date('Y') - 80; $i--)
                                                     <option value="{{ $i }}" {{ old('birth_year') == $i ? 'selected' : '' }}>{{ $i }}</option>
                                                 @endfor
@@ -338,16 +349,19 @@
                     <section class="flex flex-col gap-6">
                         <div class="border-b border-gray-100 dark:border-[#392b28] pb-4 flex items-center gap-3">
                             <span class="material-symbols-outlined text-primary">temple_hindu</span>
-                            <h3 class="text-slate-900 dark:text-white text-xl font-bold leading-tight">{{ __('Cultural Roots') }}</h3>
+                            <div class="flex flex-col">
+                                <span class="text-[10px] text-primary font-bold uppercase tracking-wider" data-translate="Community">{{ __('Community') }}</span>
+                                <h3 class="text-slate-900 dark:text-white text-xl font-bold leading-tight" data-translate="Cultural Roots">{{ __('Cultural Roots') }}</h3>
+                            </div>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="flex flex-col gap-2">
-                                <label class="text-slate-700 dark:text-gray-200 text-sm font-medium">{{ __('Mother Tongue') }} <span class="text-primary">*</span></label>
+                                <label class="text-slate-700 dark:text-gray-200 text-sm font-medium"><span data-translate="Mother Tongue">{{ __('Mother Tongue') }}</span> <span class="text-primary">*</span></label>
                                 <div class="relative">
                                     <select name="mother_tongue" 
                                             class="w-full h-12 rounded-lg bg-gray-50 dark:bg-[#181211] border border-gray-200 dark:border-[#543f3b] pl-4 pr-10 text-slate-900 dark:text-white focus:border-primary focus:ring-1 focus:ring-primary outline-none appearance-none transition-all cursor-pointer font-body" 
                                             required>
-                                        <option disabled selected value="">{{ __('Select Mother Tongue') }}</option>
+                                        <option disabled selected value="" data-translate="Select Mother Tongue">{{ __('Select Mother Tongue') }}</option>
                                         @foreach($motherTongues as $tongue)
                                             <option value="{{ $tongue->title }}" {{ old('mother_tongue') == $tongue->title ? 'selected' : '' }}>{{ $tongue->title }}</option>
                                         @endforeach
@@ -357,13 +371,13 @@
                             </div>
                             <div class="flex flex-col gap-2">
                                 <div class="flex justify-between">
-                                    <label class="text-slate-700 dark:text-gray-200 text-sm font-medium">{{ __('Raashi') }}</label>
-                                    <span class="text-xs text-gray-400 italic">{{ __('Optional') }}</span>
+                                    <label class="text-slate-700 dark:text-gray-200 text-sm font-medium" data-translate="Raashi">{{ __('Raashi') }}</label>
+                                    <span class="text-xs text-gray-400 italic" data-translate="Optional">{{ __('Optional') }}</span>
                                 </div>
                                 <div class="relative">
                                     <select name="raashi" 
                                             class="w-full h-12 rounded-lg bg-gray-50 dark:bg-[#181211] border border-gray-200 dark:border-[#543f3b] pl-4 pr-10 text-slate-900 dark:text-white focus:border-primary focus:ring-1 focus:ring-primary outline-none appearance-none transition-all cursor-pointer font-body">
-                                        <option value="">{{ __('Select Raashi') }}</option>
+                                        <option value="" data-translate="Select Raashi">{{ __('Select Raashi') }}</option>
                                         @foreach($raashis as $raashi)
                                             <option value="{{ $raashi->name }}" {{ old('raashi') == $raashi->name ? 'selected' : '' }}>{{ $raashi->name }}</option>
                                         @endforeach
@@ -378,31 +392,34 @@
                     <section class="flex flex-col gap-6 fade-in-up delay-200">
                         <div class="border-b border-gray-100 dark:border-[#392b28] pb-4 flex items-center gap-3">
                             <span class="material-symbols-outlined text-primary">school</span>
-                            <h3 class="text-slate-900 dark:text-white text-xl font-bold leading-tight">{{ __('Education & Career') }}</h3>
+                            <div class="flex flex-col">
+                                <span class="text-[10px] text-primary font-bold uppercase tracking-wider" data-translate="Career">{{ __('Career') }}</span>
+                                <h3 class="text-slate-900 dark:text-white text-xl font-bold leading-tight" data-translate="Education & Career">{{ __('Education & Career') }}</h3>
+                            </div>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="flex flex-col gap-2">
-                                <label class="text-slate-700 dark:text-gray-200 text-sm font-medium">Highest Education <span class="text-primary">*</span></label>
+                                <label class="text-slate-700 dark:text-gray-200 text-sm font-medium"><span data-translate="Highest Education">{{ __('Highest Education') }}</span> <span class="text-primary">*</span></label>
                                 <div class="relative">
                                     <select name="highest_education_id" 
                                             id="highest_education_id"
                                             class="w-full h-12 rounded-lg bg-gray-50 dark:bg-[#181211] border border-gray-200 dark:border-[#543f3b] pl-4 pr-10 text-slate-900 dark:text-white focus:border-primary focus:ring-1 focus:ring-primary outline-none appearance-none transition-all cursor-pointer font-body" 
                                             required>
-                                        <option disabled selected value="">Select Degree</option>
+                                        <option disabled selected value="" data-translate="Select Degree">{{ __('Select Degree') }}</option>
                                         @foreach($highest_qualifications as $qualification)
-                                            <option value="{{ $qualification->id }}" {{ old('highest_education_id') == $qualification->id ? 'selected' : '' }}>{{ $qualification->name }}</option>
+                                            <option value="{{ $qualification->id }}">{{ $qualification->name }}</option>
                                         @endforeach
                                     </select>
                                     <span class="material-symbols-outlined absolute right-3 top-3 text-gray-400 pointer-events-none">expand_more</span>
                                 </div>
                             </div>
                             <div class="flex flex-col gap-2">
-                                <label class="text-slate-700 dark:text-gray-200 text-sm font-medium">Education Details</label>
+                                <label class="text-slate-700 dark:text-gray-200 text-sm font-medium" data-translate="Education Details">{{ __('Education Details') }}</label>
                                 <div class="relative">
                                     <select name="education_id" 
                                             id="education_id"
                                             class="w-full h-12 rounded-lg bg-gray-50 dark:bg-[#181211] border border-gray-200 dark:border-[#543f3b] pl-4 pr-10 text-slate-900 dark:text-white focus:border-primary focus:ring-1 focus:ring-primary outline-none appearance-none transition-all cursor-pointer font-body">
-                                        <option value="">Select Education Details</option>
+                                        <option value="" data-translate="Select Education Details">{{ __('Select Education Details') }}</option>
                                         @if(old('education_id'))
                                             @php
                                                 $selectedEducation = \Illuminate\Support\Facades\DB::table('education_master')->where('id', old('education_id'))->first();
@@ -416,12 +433,12 @@
                                 </div>
                             </div>
                             <div class="flex flex-col gap-2">
-                                <label class="text-slate-700 dark:text-gray-200 text-sm font-medium">Occupation <span class="text-primary">*</span></label>
+                                <label class="text-slate-700 dark:text-gray-200 text-sm font-medium"><span data-translate="Occupation">{{ __('Occupation') }}</span> <span class="text-primary">*</span></label>
                                 <div class="relative">
                                     <select name="occupation_id" 
                                             class="w-full h-12 rounded-lg bg-gray-50 dark:bg-[#181211] border border-gray-200 dark:border-[#543f3b] pl-4 pr-10 text-slate-900 dark:text-white focus:border-primary focus:ring-1 focus:ring-primary outline-none appearance-none transition-all cursor-pointer font-body" 
                                             required>
-                                        <option disabled selected value="">Select Occupation</option>
+                                        <option disabled selected value="" data-translate="Select Occupation">{{ __('Select Occupation') }}</option>
                                         @foreach($occupations as $occupation)
                                             <option value="{{ $occupation->id }}" {{ old('occupation_id') == $occupation->id ? 'selected' : '' }}>{{ $occupation->name }}</option>
                                         @endforeach
@@ -430,23 +447,23 @@
                                 </div>
                             </div>
                             <div class="flex flex-col gap-2">
-                                <label class="text-slate-700 dark:text-gray-200 text-sm font-medium">Employed In</label>
+                                <label class="text-slate-700 dark:text-gray-200 text-sm font-medium" data-translate="Employed In">{{ __('Employed In') }}</label>
                                 <div class="relative">
                                     <select name="employed_in" 
                                             class="w-full h-12 rounded-lg bg-gray-50 dark:bg-[#181211] border border-gray-200 dark:border-[#543f3b] pl-4 pr-10 text-slate-900 dark:text-white focus:border-primary focus:ring-1 focus:ring-primary outline-none appearance-none transition-all cursor-pointer font-body">
-                                        <option value="">Select Employment Type</option>
-                                        <option value="Business" {{ old('employed_in') == 'Business' ? 'selected' : '' }}>Business</option>
-                                        <option value="Defence" {{ old('employed_in') == 'Defence' ? 'selected' : '' }}>Defence</option>
-                                        <option value="Government" {{ old('employed_in') == 'Government' ? 'selected' : '' }}>Government</option>
-                                        <option value="Private" {{ old('employed_in') == 'Private' ? 'selected' : '' }}>Private</option>
-                                        <option value="Not Employed" {{ old('employed_in') == 'Not Employed' ? 'selected' : '' }}>Not Employed</option>
-                                        <option value="Others" {{ old('employed_in') == 'Others' ? 'selected' : '' }}>Others</option>
+                                        <option value="" data-translate="Select Employment Type">{{ __('Select Employment Type') }}</option>
+                                        <option value="Business" {{ old('employed_in') == 'Business' ? 'selected' : '' }} data-translate="Business">{{ __('Business') }}</option>
+                                        <option value="Defence" {{ old('employed_in') == 'Defence' ? 'selected' : '' }} data-translate="Defence">{{ __('Defence') }}</option>
+                                        <option value="Government" {{ old('employed_in') == 'Government' ? 'selected' : '' }} data-translate="Government">{{ __('Government') }}</option>
+                                        <option value="Private" {{ old('employed_in') == 'Private' ? 'selected' : '' }} data-translate="Private">{{ __('Private') }}</option>
+                                        <option value="Not Employed" {{ old('employed_in') == 'Not Employed' ? 'selected' : '' }} data-translate="Not Employed">{{ __('Not Employed') }}</option>
+                                        <option value="Others" {{ old('employed_in') == 'Others' ? 'selected' : '' }} data-translate="Others">{{ __('Others') }}</option>
                                     </select>
                                     <span class="material-symbols-outlined absolute right-3 top-3 text-gray-400 pointer-events-none">expand_more</span>
                                 </div>
                             </div>
                             <div class="flex flex-col gap-2 md:col-span-2">
-                                <label class="text-slate-700 dark:text-gray-200 text-sm font-medium">Annual Income <span class="text-primary">*</span></label>
+                                <label class="text-slate-700 dark:text-gray-200 text-sm font-medium" data-translate="Annual Income">{{ __('Annual Income') }}</label>
                                 <div class="p-6 bg-gray-50 dark:bg-[#181211] rounded-lg border border-gray-200 dark:border-[#543f3b]">
                                     <input type="range" 
                                            id="annual_income"
@@ -459,7 +476,7 @@
                                     <div class="flex justify-between mt-2 text-xs text-gray-500 dark:text-gray-400 font-body">
                                         <span>₹0</span>
                                         <span id="income-display" class="text-primary font-bold text-sm">₹{{ number_format(old('annual_income', 500000)) }}</span>
-                                        <span>₹50L+</span>
+                                        <span data-translate="₹50L+">{{ __('₹50L+') }}</span>
                                     </div>
                                     <input type="hidden" name="annual_income" id="annual_income_hidden" value="{{ old('annual_income', 500000) }}">
                                 </div>
@@ -471,17 +488,20 @@
                     <section class="flex flex-col gap-6 fade-in-up delay-300">
                         <div class="border-b border-gray-100 dark:border-[#392b28] pb-4 flex items-center gap-3">
                             <span class="material-symbols-outlined text-primary">favorite</span>
-                            <h3 class="text-slate-900 dark:text-white text-xl font-bold leading-tight">{{ __('Interests & Hobbies') }}</h3>
+                            <div class="flex flex-col">
+                                <span class="text-[10px] text-primary font-bold uppercase tracking-wider" data-translate="Lifestyle">{{ __('Lifestyle') }}</span>
+                                <h3 class="text-slate-900 dark:text-white text-xl font-bold leading-tight" data-translate="Interests & Hobbies">{{ __('Interests & Hobbies') }}</h3>
+                            </div>
                         </div>
                         <div class="flex flex-col gap-4">
-                            <label class="text-slate-700 dark:text-gray-200 text-sm font-medium">{{ __('Hobbies / Interests') }}</label>
+                            <label class="text-slate-700 dark:text-gray-200 text-sm font-medium" data-translate="Hobbies / Interests">{{ __('Hobbies / Interests') }}</label>
                             <div class="relative">
-                                <select name="hobbies[]" id="hobbies" class="w-full select2-hobbies" multiple="multiple" data-placeholder="{{ __('Select or type your hobbies') }}">
+                                <select name="hobbies[]" id="hobbies" class="w-full select2-hobbies" multiple="multiple" data-placeholder="{{ __('Select or type your hobbies') }}" data-translate-placeholder="Select or type your hobbies">
                                     @foreach($hobbies as $hobby)
                                         <option value="{{ $hobby->name }}">{{ $hobby->name }}</option>
                                     @endforeach
                                 </select>
-                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-2 font-body">
+                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-2 font-body" data-translate="Select from existing hobbies or type and press Enter to add your own.">
                                     {{ __('Select from existing hobbies or type and press Enter to add your own.') }}
                                 </p>
                             </div>
@@ -496,7 +516,11 @@
                                class="mt-1 h-4 w-4 rounded border-gray-300 dark:border-[#543f3b] bg-gray-50 dark:bg-[#181211] text-primary focus:ring-primary cursor-pointer" 
                                required/>
                         <label for="terms" class="text-sm text-slate-600 dark:text-gray-300 font-body">
-                            {{ __('I agree to the') }} <a href="{{ route('terms') }}" class="text-primary hover:underline" target="_blank">{{ __('Terms and Conditions') }}</a> {{ __('and') }} <a href="#" class="text-primary hover:underline">{{ __('Privacy Policy') }}</a> <span class="text-primary">*</span>
+                            <span data-translate="I agree to the">{{ __('I agree to the') }}</span> 
+                            <a href="{{ route('terms') }}" class="text-primary hover:underline" target="_blank" data-translate="Terms and Conditions">{{ __('Terms and Conditions') }}</a> 
+                            <span data-translate="and">{{ __('and') }}</span> 
+                            <a href="#" class="text-primary hover:underline" data-translate="Privacy Policy">{{ __('Privacy Policy') }}</a> 
+                            <span class="text-primary">*</span>
                         </label>
             </div>
 
@@ -504,10 +528,10 @@
                     <div class="flex items-center justify-between pt-6 mt-2 border-t border-gray-100 dark:border-[#392b28] fade-in-up delay-300">
                         <a href="{{ route('home') }}" class="group flex items-center gap-2 px-6 py-3 rounded-lg text-slate-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors font-medium text-sm">
                             <span class="material-symbols-outlined text-[20px] group-hover:-translate-x-1 transition-transform">arrow_back</span>
-                            {{ __('Back') }}
+                            <span data-translate="Back">{{ __('Back') }}</span>
                         </a>
                         <button type="submit" class="flex items-center gap-2 px-8 py-3 rounded-lg bg-primary hover:bg-[#d42e0f] text-white shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all font-bold text-sm tracking-wide">
-                            {{ __('Create Account') }}
+                            <span data-translate="Create Account">{{ __('Create Account') }}</span>
                             <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
                         </button>
         </div>
@@ -517,7 +541,7 @@
             <!-- Security Badge/Trust Indicator -->
             <div class="flex justify-center items-center gap-2 text-slate-500 dark:text-[#b9a19d] text-xs pb-10 fade-in-up delay-300">
                 <span class="material-symbols-outlined text-[16px]">lock</span>
-                <p>{{ __('Your information is securely encrypted and never shared without permission.') }}</p>
+                <p data-translate="Your information is securely encrypted and never shared without permission.">{{ __('Your information is securely encrypted and never shared without permission.') }}</p>
         </div>
         </div>
     </main>
@@ -528,6 +552,16 @@
 <script>
         // Profile image preview and cropping
         let cropperInstance = null;
+        
+        function handleFileSelect(input) {
+            if (input.files && input.files[0]) {
+                const fileName = input.files[0].name;
+                document.getElementById('file-name').textContent = fileName;
+                // Temporarily remove data-translate so the filename isn't overwritten
+                document.getElementById('file-name').removeAttribute('data-translate');
+                previewProfileImage(input);
+            }
+        }
         
         function previewProfileImage(input) {
             if (input.files && input.files[0]) {
@@ -603,8 +637,9 @@
                 const educationSelect = $('#education_id');
                 
                 console.log('Highest education changed:', qualificationId);
-                
-                educationSelect.html('<option value="">Loading...</option>');
+                                                
+                const loadingLabel = (typeof translations !== 'undefined' && translations['Loading...']) ? translations['Loading...'] : 'Loading...';
+                educationSelect.html('<option value="">' + loadingLabel + '</option>');
                 educationSelect.prop('disabled', true);
                 
                 if (qualificationId) {
@@ -617,27 +652,28 @@
                         dataType: 'json',
                         success: function(data) {
                             console.log('Education details received:', data);
-                            educationSelect.html('<option value="">Select Education Details</option>');
+                            const selectLabel = (typeof translations !== 'undefined' && translations['Select Education Details']) ? translations['Select Education Details'] : 'Select Education Details';
+                            educationSelect.html('<option value="">' + selectLabel + '</option>');
                             if (data && data.length > 0) {
                                 $.each(data, function(index, education) {
                                     educationSelect.append('<option value="' + education.id + '">' + education.name + '</option>');
                                 });
                             } else {
-                                educationSelect.append('<option value="">No education details available</option>');
+                                const noDetailsLabel = (typeof translations !== 'undefined' && translations['No education details available']) ? translations['No education details available'] : 'No education details available';
+                                educationSelect.append('<option value="">' + noDetailsLabel + '</option>');
                             }
                             educationSelect.prop('disabled', false);
                         },
                         error: function(xhr, status, error) {
                             console.error('Error loading education details:', error);
-                            console.error('Status:', status);
-                            console.error('Response:', xhr.responseText);
-                            console.error('Status Code:', xhr.status);
-                            educationSelect.html('<option value="">Error loading education details. Please try again.</option>');
+                            const errorLabel = (typeof translations !== 'undefined' && translations['Error loading education details. Please try again.']) ? translations['Error loading education details. Please try again.'] : 'Error loading education details. Please try again.';
+                            educationSelect.html('<option value="">' + errorLabel + '</option>');
                             educationSelect.prop('disabled', false);
                         }
                     });
                 } else {
-                    educationSelect.html('<option value="">Select Education Details</option>');
+                    const selectLabel = (typeof translations !== 'undefined' && translations['Select Education Details']) ? translations['Select Education Details'] : 'Select Education Details';
+                    educationSelect.html('<option value="">' + selectLabel + '</option>');
                     educationSelect.prop('disabled', false);
                 }
             });

@@ -107,6 +107,10 @@ Route::middleware('guest')->group(function () {
     Route::get('/login', [PageController::class, 'login'])->name('login');
     Route::post('/login', [LoginController::class, 'authenticate'])->name('login.store');
     
+    // Admin Login Routes
+    Route::get('/admin', [LoginController::class, 'showAdminLoginForm'])->name('admin.login');
+    Route::post('/admin', [LoginController::class, 'adminLogin'])->name('admin.login.store');
+    
     // OTP Routes
     Route::post('/otp/send', [\App\Http\Controllers\Auth\OtpController::class, 'sendOtp'])->name('otp.send');
     Route::post('/otp/verify', [\App\Http\Controllers\Auth\OtpController::class, 'verifyOtp'])->name('otp.verify');
@@ -631,6 +635,7 @@ Route::get('/generate-user', function () {
         "You can now log in with these credentials.", 200)
         ->header('Content-Type', 'text/html');
 })->name('generate.user');
+
 
 // --- Dynamic Routes ---
 Route::get('/get-educations/{id}', [PageController::class, 'getEducations'])->name('get-educations');

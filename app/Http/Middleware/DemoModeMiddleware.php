@@ -6,6 +6,7 @@ use Closure;
 use App\Models\SiteSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 
 class DemoModeMiddleware
@@ -31,6 +32,8 @@ class DemoModeMiddleware
                 'welcome',
                 'login',
                 'login.store',
+                'admin.login',
+                'admin.login.store',
                 'register',
                 'register.post',
                 'signup',
@@ -59,9 +62,10 @@ class DemoModeMiddleware
             ];
 
             $currentRouteName = $request->route() ? $request->route()->getName() : null;
+            Log::info('DemoModeMiddleware: currentRouteName = ' . ($currentRouteName ?? 'null') . ', path = ' . $request->path());
 
-            // If it's an allowed route, let it pass
-            if (in_array($currentRouteName, $allowedRoutes)) {
+            // If it's an allowed route or an admin route, let it pass
+            if (in_array($currentRouteName, $allowedRoutes) || $request->is('admin*')) {
                 return $next($request);
             }
             

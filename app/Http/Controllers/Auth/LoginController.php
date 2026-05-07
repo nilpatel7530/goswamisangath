@@ -10,6 +10,49 @@ use App\Models\User;
 class LoginController extends Controller
 {
     /**
+     * Show the admin login form.
+     */
+    public function showAdminLoginForm()
+    {
+        return view('admin.login');
+    }
+
+    /**
+     * Handle an admin's authentication attempt.
+     */
+    public function adminLogin(Request $request)
+    {
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required', 'string'],
+            'remember' => ['nullable'],
+        ]);
+        
+        $remember = $request->has('remember');
+
+        if (Auth::attempt(['email' => $credentials['email'], 'password' => $credentials['password']], $remember)) {
+            $user = Auth::user();
+            $user->refresh();
+            
+            if ($user->role === 'admin') {
+                $request->session()->regenerate();
+                return redirect()->route('admin.dashboard')
+                    ->with('success', 'Welcome back, Admin!');
+            }
+
+            // Not an admin - log out and return error
+            Auth::logout();
+            return back()->withErrors([
+                'email' => 'Access denied. These credentials do not belong to an administrator.',
+            ])->onlyInput('email');
+        }
+
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ])->onlyInput('email');
+    }
+
+    /**
      * Handle a user's authentication attempt.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -25,7 +68,6 @@ class LoginController extends Controller
         ]);
         
         // Convert remember checkbox value to boolean
-        // HTML checkboxes send "on" when checked, or nothing when unchecked
         $remember = $request->has('remember') && $request->remember === 'on';
 
         // 2. Attempt to authenticate the user
@@ -45,9 +87,9 @@ class LoginController extends Controller
                     ->with('success', 'Welcome back, Admin!');
             }
 
-                // Regular users go to their dashboard
-                return redirect()->route('dashboard')
-                    ->with('success', 'Welcome back!');
+            // Regular users go to their dashboard
+            return redirect()->route('dashboard')
+                ->with('success', 'Welcome back!');
         }
 
         // 5. Authentication failed - return with error
