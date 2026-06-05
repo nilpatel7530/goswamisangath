@@ -1,61 +1,115 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Goswami Sangath: Matrimonial & Matchmaking Platform
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Goswami Sangath is a community-focused matrimonial web application designed to connect and facilitate matchmaking within the Goswami community. It is built with **Laravel 12**, **Livewire 4.1**, and **AdminLTE 3**, with built-in integrations for **Razorpay** payments, **Google Socialite** authentication, and robust OTP verification.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 🌟 Key Features
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### 1. User Authentications
+- **OTP-Based Verification:** Secure mobile login using OTP verification via SMS gateways.
+- **Social Sign-In:** One-click Google login integration powered by Laravel Socialite.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 2. Comprehensive Profile Builder
+- **Biodata & Attributes:** Fields for education, career details, physical attributes, and family background.
+- **Horoscope & Astro Details:** Astro compatibility details including gotra, rashi, and manglik status.
+- **Document/Photo Uploads:** Secured photo upload system with automatic moderation review queues.
 
-## Learning Laravel
+### 3. Matchmaking & User Interactions
+- **Matches Engine:** Calculates and recommends potential matches based on user preferences.
+- **Advanced Filters:** Search and filter profiles by location, age, occupation, education, and gotra.
+- **Interest System:** Users can send interest requests, accept/decline proposals, and block specific profiles.
+- **In-App Chat:** Real-time user-to-user messaging and notifications system.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 4. Memberships & Razorpay Payment Integration
+- **Premium Tiers:** Configure duration, contact view limits, and messaging permissions per subscription.
+- **Razorpay SDK:** Integrated payment gateway supporting card, UPI, net banking, and wallets.
+- **Auto-Activation:** Immediate unlocking of premium features upon successful payment confirmation.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### 5. Back-Office Admin Panel
+- **AdminLTE v3 Integration:** Visual dashboard highlighting registration trends, user reports, and revenue charts.
+- **Moderation Workflow:** Review user-submitted profiles, approve/reject photos, and handle user reports/complaints.
+- **System Configs:** Admin control panel to configure payment API keys, SMS gateway configurations, and platform settings.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 6. Mobile-Ready REST API
+- Decoupled API controllers (using **Laravel Sanctum**) supporting mobile and external frontend clients.
+- Pre-configured Postman collection included: `TrueUnion_API_Collection2.postman_collection.json`.
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## 🛠️ Tech Stack
 
-### Premium Partners
+- **Backend:** Laravel 12.0 (PHP 8.2+)
+- **Interactive UI:** Livewire 4.1
+- **Styling:** Bootstrap + Tailwind CSS
+- **Admin Theme:** AdminLTE 3
+- **Payment Gateway:** Razorpay SDK (v2.8)
+- **Auth Services:** Laravel Socialite (Google Auth) & Laravel Sanctum
+- **Code Standards:** Laravel Pint
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+---
 
-## Contributing
+## ⚙️ Core Application Directory Structure
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- `app/Http/Controllers/`
+  - `ProfileCompletionController.php` - Wizard steps for registering users.
+  - `MessagesController.php` - Chat backend logic.
+  - `BlockController.php` - Restricting interactions and users blocklists.
+  - `SubscriptionController.php` & `PaymentController.php` - Razorpay checkout and webhook systems.
+  - `Admin/` - AdminLTE dashboards and user verification modules.
+  - `Api/` - Sanctum-secured controllers for mobile clients (Auth, Search, Matches, Payments, Messages).
+- `routes/`
+  - `web.php` - Frontend routes, subscription checkout, and Blade actions.
+  - `api.php` - API endpoints for mobile/decoupled clients.
+- `TrueUnion_API_Collection2.postman_collection.json` - Comprehensive API endpoints testing collection.
 
-## Code of Conduct
+---
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## 💻 Getting Started & Installation
 
-## Security Vulnerabilities
+### Prerequisites
+- PHP 8.2+
+- Composer
+- Node.js & NPM
+- MySQL Database
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Installation Steps
 
-## License
+1. **Clone the Repository & Install Dependencies**
+   ```bash
+   composer install
+   npm install
+   ```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+2. **Setup Environment**
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
+
+3. **Configure Database & Services in `.env`**
+   ```env
+   DB_DATABASE=goswami_matrimonial
+   DB_USERNAME=root
+   DB_PASSWORD=your_password
+
+   # Razorpay Credentials
+   RAZORPAY_KEY_ID=rzp_test_xxxxxx
+   RAZORPAY_KEY_SECRET=xxxxxx
+
+   # Google Socialite
+   GOOGLE_CLIENT_ID=xxxxxx
+   GOOGLE_CLIENT_SECRET=xxxxxx
+   GOOGLE_REDIRECT_URI=http://localhost:8000/auth/google/callback
+   ```
+
+4. **Run Database Migrations & Seeds**
+   ```bash
+   php artisan migrate --seed
+   ```
+
+5. **Start the Concurrent Development Server**
+   This project runs Laravel Serve, Queue Listeners, Pail logger, and Vite concurrently:
+   ```bash
+   npm run dev
+   ```
